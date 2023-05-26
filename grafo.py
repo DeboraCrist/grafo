@@ -46,22 +46,35 @@ def tipo_de_grafo(grafo):
     else:
         print("Não foi possível determinar o tipo do grafo.")
 
+
 def main():
-    vertices = int(input("Digite o número de vértices do grafo: "))
-    g = Grafo(vertices)
+    arquivo = input("Digite o nome do arquivo de texto: ")
+    try:
+        with open(arquivo, 'r') as f:
+            #<número de vértices>
+            vertices = int(f.readline())
+            #<número de arestas>
+            arestas = int(f.readline())
 
-    arestas = int(input("Digite o número de arestas: "))
-    for i in range(arestas):
-        print(f"\nDigite as informações da aresta {i + 1}:")
-        u = int(input("Vértice de origem: "))
-        v = int(input("Vértice de destino: "))
-        g.adiciona_aresta(u, v)
+            g = Grafo(vertices)
+            # <aresta 1>
+            #<aresta 2>
+            #...
+            #<aresta n>
+            for _ in range(arestas):
+                linha = f.readline().split()
+                u = int(linha[0])
+                v = int(linha[1])
+                g.adiciona_aresta(u, v)
 
-    print()
-    g.mostra_matriz()
+            print()
+            g.mostra_matriz()
 
-    print()
-    tipo_de_grafo(g)
+            print()
+            tipo_de_grafo(g)
+
+    except FileNotFoundError:
+        print("Arquivo não encontrado.")
 
 
 if __name__ == '__main__':
