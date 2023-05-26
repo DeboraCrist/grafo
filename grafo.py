@@ -15,27 +15,54 @@ class Grafo:
             print(self.grafo[i])
 
 
-vertices = int(input("Digite o número de vértices do grafo: "))
-g = Grafo(vertices)
+def tipo_de_grafo(grafo):
+    vertices = set()
+    multiarestas = set()
+    lacos = set()
 
-arestas = int(input("Digite o número de arestas: "))
-for i in range(arestas):
-    print(f"Digite as informações da aresta {i + 1}:")
-    u = int(input("Vértice de origem: "))
-    v = int(input("Vértice de destino: "))
-    g.adiciona_aresta(u, v)
+    for u in range(grafo.vertices):
+        for v in range(grafo.vertices):
+            if grafo.grafo[u][v] > 0:
+                aresta = (u+1, v+1)
+                vertices.add(u+1)
+                vertices.add(v+1)
 
-g.mostra_matriz()
+                if u == v:
+                    lacos.add(u+1)
 
-# vertice = 5
+                if grafo.direcionado:
+                    if grafo.grafo[v][u] > 0 or grafo.grafo[u][v] > 1:
+                        multiarestas.add(aresta)
+                else:
+                    if grafo.grafo[v][u] > 1 or grafo.grafo[u][v] > 1:
+                        multiarestas.add(aresta)
 
-# [0, 1, 0, 0, 0]
-# [0, 0, 1, 1, 0]
-# [0, 0, 0, 1, 0]
-# [0, 0, 0, 0, 0]
-# [0, 0, 0, 0, 0]
+    if multiarestas and lacos:
+        print("O grafo é um pseudografo.")
+    elif multiarestas and not lacos:
+        print("O grafo é um multigrafo.")
+    elif not multiarestas and not lacos:
+        print("O grafo é um grafo simples.")
+    else:
+        print("Não foi possível determinar o tipo do grafo.")
 
-# (1,2)
-# (3,4) 
-# (2, 3) 
-# (2, 4)
+def main():
+    vertices = int(input("Digite o número de vértices do grafo: "))
+    g = Grafo(vertices)
+
+    arestas = int(input("Digite o número de arestas: "))
+    for i in range(arestas):
+        print(f"\nDigite as informações da aresta {i + 1}:")
+        u = int(input("Vértice de origem: "))
+        v = int(input("Vértice de destino: "))
+        g.adiciona_aresta(u, v)
+
+    print()
+    g.mostra_matriz()
+
+    print()
+    tipo_de_grafo(g)
+
+
+if __name__ == '__main__':
+    main()
