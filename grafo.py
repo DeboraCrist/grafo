@@ -10,13 +10,12 @@ class Grafo:
         self.grafo[u - 1][v - 1] += 1
         if not self.direcionado:
             self.grafo[v - 1][u - 1] += 1
-
-    """def mostra_matriz(self):
+"""
+    def mostra_matriz(self):
         print('A matriz de adjacências é:')
         for i in range(self.vertices):
-            print(self.grafo[i])"""
-
-
+            print(self.grafo[i])
+"""    
 def tipo_de_grafo(grafo):
     vertices = set()
     multiarestas = set()
@@ -48,31 +47,38 @@ def tipo_de_grafo(grafo):
     else:
         print("Não foi possível determinar o tipo do grafo.")
 
+def carregar_grafos(arquivo):
+    with open(arquivo, 'r') as f:
+        try:
+            data = json.load(f)
+            graphs = data["graphs"]
+
+            for graph in graphs:
+                print(f"\nAnalisando Grafo {graph['id']}")
+
+                vertices = len(graph["vertices"])
+                g = Grafo(vertices)
+
+                for edge in graph["edges"]:
+                    u = graph["vertices"].index(edge[0]) + 1
+                    v = graph["vertices"].index(edge[1]) + 1
+                    g.adiciona_aresta(u, v)
+                
+                #g.mostra_matriz()
+                tipo_de_grafo(g)
+        except json.JSONDecodeError as e:
+            print(f"Erro ao decodificar o arquivo JSON: {str(e)}")
 
 def main():
-    arquivo = input("Digite o caminho completo do arquivo JSON: ")
-    if not arquivo.endswith('.json'):
-        print("O arquivo deve ter a extensão .json")
-        return
+    entrada = input("Digite o comando 'grafos carregar arquivo.json': ")
+    partes = entrada.split(" ")
     
-    with open(arquivo, 'r') as f:
-        data = json.load(f)
-        graphs = data["graphs"]
+    if len(partes) != 3 or partes[0] != "grafos" or partes[1] != "carregar":
+        print("Comando inválido.")
+        return
 
-        for graph in graphs:
-            print(f"\nAnalisando Grafo {graph['id']}")
-
-            vertices = len(graph["vertices"])
-            g = Grafo(vertices)
-
-            for edge in graph["edges"]:
-                u = graph["vertices"].index(edge[0]) + 1
-                v = graph["vertices"].index(edge[1]) + 1
-                g.adiciona_aresta(u, v)
-
-            ##g.mostra_matriz()
-            tipo_de_grafo(g)
-
+    arquivo = partes[2]
+    carregar_grafos(arquivo)
 
 if __name__ == '__main__':
     main()
