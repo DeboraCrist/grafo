@@ -1,3 +1,5 @@
+import json
+
 class Grafo:
     def __init__(self, vertices, direcionado=True):
         self.vertices = vertices
@@ -9,10 +11,10 @@ class Grafo:
         if not self.direcionado:
             self.grafo[v - 1][u - 1] += 1
 
-    def mostra_matriz(self):
+    """def mostra_matriz(self):
         print('A matriz de adjacências é:')
         for i in range(self.vertices):
-            print(self.grafo[i])
+            print(self.grafo[i])"""
 
 
 def tipo_de_grafo(grafo):
@@ -48,33 +50,28 @@ def tipo_de_grafo(grafo):
 
 
 def main():
-    arquivo = input("Digite o nome do arquivo de texto: ")
-    try:
-        with open(arquivo, 'r') as f:
-            #<número de vértices>
-            vertices = int(f.readline())
-            #<número de arestas>
-            arestas = int(f.readline())
+    arquivo = input("Digite o caminho completo do arquivo JSON: ")
+    if not arquivo.endswith('.json'):
+        print("O arquivo deve ter a extensão .json")
+        return
+    
+    with open(arquivo, 'r') as f:
+        data = json.load(f)
+        graphs = data["graphs"]
 
+        for graph in graphs:
+            print(f"\nAnalisando Grafo {graph['id']}")
+
+            vertices = len(graph["vertices"])
             g = Grafo(vertices)
-            # <aresta 1>
-            #<aresta 2>
-            #...
-            #<aresta n>
-            for _ in range(arestas):
-                linha = f.readline().split()
-                u = int(linha[0])
-                v = int(linha[1])
+
+            for edge in graph["edges"]:
+                u = graph["vertices"].index(edge[0]) + 1
+                v = graph["vertices"].index(edge[1]) + 1
                 g.adiciona_aresta(u, v)
 
-            print()
-            g.mostra_matriz()
-
-            print()
+            ##g.mostra_matriz()
             tipo_de_grafo(g)
-
-    except FileNotFoundError:
-        print("Arquivo não encontrado.")
 
 
 if __name__ == '__main__':
