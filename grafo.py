@@ -47,6 +47,7 @@ def carregar_grafos(arquivo):
         try:
             data = json.load(f)
             graphs = data["graphs"]
+            loaded_graphs = []
 
             for graph in graphs:
                 vertices = len(graph["vertices"])
@@ -57,9 +58,9 @@ def carregar_grafos(arquivo):
                     v = graph["vertices"].index(edge[1]) + 1
                     g.adiciona_aresta(u, v)
 
-                tipo = tipo_de_grafo(g)
-                if tipo == "multigrafo":
-                    print(f"Grafo {graph['id']} é um multigrafo")
+                loaded_graphs.append(g)
+
+            return loaded_graphs
 
         except json.JSONDecodeError as e:
             print(f"Erro ao decodificar o arquivo JSON: {str(e)}")
@@ -68,14 +69,34 @@ def main():
     entrada = input("Digite o comando: ")
     partes = entrada.split(" ")
 
-    if partes[0] == "grafos":
-        if partes[1] == "carregar":
-            arquivo = partes[2]
-            carregar_grafos(arquivo)
-        elif partes[1] == "multigrafos":
-             print(f"Grafo {graph['id']} é um multigrafo")
-        else:
-            print("Comando inválido.")
+    if len(partes) == 3 and partes[0] == "grafos" and partes[1] == "carregar":
+        arquivo = partes[2]
+        loaded_graphs = carregar_grafos(arquivo)
+
+        if loaded_graphs is not None:
+            print("Grafos carregados com sucesso!")
+            pseudografos = []  
+
+            while True:
+                comando = input("Digite o comando: ")
+                if comando == "grafos multigrafos":
+                    for i, graph in enumerate(loaded_graphs):
+                        tipo = tipo_de_grafo(graph)
+                        if tipo == "multigrafo":
+                            print(f"Grafo {i + 1} é um multigrafo.")
+                elif comando == "grafos pseudografos":
+                    for i, graph in enumerate(loaded_graphs):
+                        tipo = tipo_de_grafo(graph)
+                        if tipo == "pseudografo":
+                            pseudografos.append(str(i + 1))
+                    if pseudografos:
+                        print(f"Os grafos {', '.join(pseudografos)} são pseudografos.")
+                    else:
+                        print("Nenhum pseudografo encontrado.")
+                elif comando == "grafos sair":
+                    break 
+                else:
+                    print("Comando inválido.")
     else:
         print("Comando inválido.")
 
