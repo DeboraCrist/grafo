@@ -10,12 +10,7 @@ class Grafo:
         self.grafo[u - 1][v - 1] += 1
         if not self.direcionado:
             self.grafo[v - 1][u - 1] += 1
-"""
-    def mostra_matriz(self):
-        print('A matriz de adjacências é:')
-        for i in range(self.vertices):
-            print(self.grafo[i])
-"""    
+
 def tipo_de_grafo(grafo):
     vertices = set()
     multiarestas = set()
@@ -39,13 +34,13 @@ def tipo_de_grafo(grafo):
                         multiarestas.add(aresta)
 
     if multiarestas and lacos:
-        print("O grafo é um pseudografo.")
+        return "pseudografo"
     elif multiarestas and not lacos:
-        print("O grafo é um multigrafo.")
+        return "multigrafo"
     elif not multiarestas and not lacos:
-        print("O grafo é um grafo simples.")
+        return "grafo simples"
     else:
-        print("Não foi possível determinar o tipo do grafo.")
+        return "indefinido"
 
 def carregar_grafos(arquivo):
     with open(arquivo, 'r') as f:
@@ -54,8 +49,6 @@ def carregar_grafos(arquivo):
             graphs = data["graphs"]
 
             for graph in graphs:
-                print(f"\nAnalisando Grafo {graph['id']}")
-
                 vertices = len(graph["vertices"])
                 g = Grafo(vertices)
 
@@ -63,22 +56,28 @@ def carregar_grafos(arquivo):
                     u = graph["vertices"].index(edge[0]) + 1
                     v = graph["vertices"].index(edge[1]) + 1
                     g.adiciona_aresta(u, v)
-                
-                #g.mostra_matriz()
-                tipo_de_grafo(g)
+
+                tipo = tipo_de_grafo(g)
+                if tipo == "multigrafo":
+                    print(f"Grafo {graph['id']} é um multigrafo")
+
         except json.JSONDecodeError as e:
             print(f"Erro ao decodificar o arquivo JSON: {str(e)}")
 
 def main():
-    entrada = input("Digite o comando 'grafos carregar arquivo.json': ")
+    entrada = input("Digite o comando: ")
     partes = entrada.split(" ")
-    
-    if len(partes) != 3 or partes[0] != "grafos" or partes[1] != "carregar":
-        print("Comando inválido.")
-        return
 
-    arquivo = partes[2]
-    carregar_grafos(arquivo)
+    if partes[0] == "grafos":
+        if partes[1] == "carregar":
+            arquivo = partes[2]
+            carregar_grafos(arquivo)
+        elif partes[1] == "multigrafos":
+             print(f"Grafo {graph['id']} é um multigrafo")
+        else:
+            print("Comando inválido.")
+    else:
+        print("Comando inválido.")
 
 if __name__ == '__main__':
     main()
