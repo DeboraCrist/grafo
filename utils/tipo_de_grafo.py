@@ -1,3 +1,4 @@
+
 def tipo_de_grafo(grafo):
     vertices = set()
     multiarestas = set()
@@ -28,3 +29,4 @@ def tipo_de_grafo(grafo):
         return "grafo simples"
     else:
         return "indefinido"
+    

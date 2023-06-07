@@ -24,4 +24,3 @@ def carregar_grafos(arquivo):
 
         except json.JSONDecodeError as e:
             print(f"Erro ao decodificar o arquivo JSON: {str(e)}")
-

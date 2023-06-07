@@ -1,7 +1,6 @@
-
 from entrada.carregar_grafos import carregar_grafos
+from utils.desconexo import is_desconexo
 from utils.tipo_de_grafo import tipo_de_grafo
-
 
 def main():
     entrada = input("Digite o comando: ")
@@ -14,6 +13,11 @@ def main():
         if loaded_graphs is not None:
             print("Grafos carregados com sucesso!")
             pseudografos = []  
+            disconnected_graphs = [] 
+
+            for i, graph in enumerate(loaded_graphs):
+                if is_desconexo(graph):
+                    disconnected_graphs.append(str(i + 1))
 
             while True:
                 comando = input("Digite o comando: ")
@@ -31,8 +35,13 @@ def main():
                         print(f"Os grafos {', '.join(pseudografos)} são pseudografos.")
                     else:
                         print("Nenhum pseudografo encontrado.")
+                elif comando == "grafos desconexos":
+                    if disconnected_graphs:
+                        print(f"Os grafos {', '.join(disconnected_graphs)} são desconexos.")
+                    else:
+                        print("Nenhum grafo desconexo encontrado.")
                 elif comando == "grafos sair":
-                    break 
+                    break  
                 else:
                     print("Comando inválido.")
     else:

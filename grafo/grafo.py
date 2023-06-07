@@ -8,3 +8,4 @@ class Grafo:
         self.grafo[u - 1][v - 1] += 1
         if not self.direcionado:
             self.grafo[v - 1][u - 1] += 1
+            
