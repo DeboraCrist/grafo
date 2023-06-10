@@ -1,4 +1,5 @@
 from entrada.carregar_grafos import carregar_grafos
+from utils.completos import grafos_completos
 from utils.desconexo import is_desconexo
 from utils.tipo_de_grafo import tipo_de_grafo
 
@@ -12,8 +13,8 @@ def main():
 
         if loaded_graphs is not None:
             print("Grafos carregados com sucesso!")
-            pseudografos = []  
-            disconnected_graphs = [] 
+            pseudografos = [] 
+            disconnected_graphs = []  
 
             for i, graph in enumerate(loaded_graphs):
                 if is_desconexo(graph):
@@ -40,8 +41,10 @@ def main():
                         print(f"Os grafos {', '.join(disconnected_graphs)} são desconexos.")
                     else:
                         print("Nenhum grafo desconexo encontrado.")
+                elif comando == "grafos completos":
+                    grafos_completos(loaded_graphs)
                 elif comando == "grafos sair":
-                    break  
+                    break 
                 else:
                     print("Comando inválido.")
     else:

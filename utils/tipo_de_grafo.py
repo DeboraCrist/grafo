@@ -1,4 +1,3 @@
-
 def tipo_de_grafo(grafo):
     vertices = set()
     multiarestas = set()
