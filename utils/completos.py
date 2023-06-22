@@ -1,5 +1,5 @@
 def grafos_completos(loaded_graphs):
-    completos = [] 
+    completos = []
 
     for i, graph in enumerate(loaded_graphs):
         num_vertices = graph.vertices

@@ -6,12 +6,12 @@ def tipo_de_grafo(grafo):
     for u in range(grafo.vertices):
         for v in range(grafo.vertices):
             if grafo.grafo[u][v] > 0:
-                aresta = (u+1, v+1)
-                vertices.add(u+1)
-                vertices.add(v+1)
+                aresta = (u + 1, v + 1)
+                vertices.add(u + 1)
+                vertices.add(v + 1)
 
                 if u == v:
-                    lacos.add(u+1)
+                    lacos.add(u + 1)
 
                 if grafo.direcionado:
                     if grafo.grafo[v][u] > 0 or grafo.grafo[u][v] > 1:
@@ -28,4 +28,3 @@ def tipo_de_grafo(grafo):
         return "grafo simples"
     else:
         return "indefinido"
-    

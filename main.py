@@ -13,8 +13,8 @@ def main():
 
         if loaded_graphs is not None:
             print("Grafos carregados com sucesso!")
-            pseudografos = [] 
-            disconnected_graphs = []  
+            pseudografos = []
+            disconnected_graphs = []
 
             for i, graph in enumerate(loaded_graphs):
                 if is_desconexo(graph):
@@ -43,12 +43,30 @@ def main():
                         print("Nenhum grafo desconexo encontrado.")
                 elif comando == "grafos completos":
                     grafos_completos(loaded_graphs)
+                elif comando.startswith("grafos graus id="):
+                    partes_comando = comando.split("=")
+                    if len(partes_comando) == 2:
+                        graph_id = int(partes_comando[1])
+                        if 1 <= graph_id <= len(loaded_graphs):
+                            graph = loaded_graphs[graph_id - 1]
+                            print(f"Graus dos vértices do grafo de ID={graph_id}:")
+                            for vertice in range(1, graph.vertices + 1):
+                                grau = graph.grau_vertice(vertice)
+                                letra = graph.letras[vertice - 1]
+                                print(f"Vértice {letra}: Grau {grau}")
+                        else:
+                            print("ID do grafo inválido.")
+                    else:
+                        print("Comando inválido.")
                 elif comando == "grafos sair":
-                    break 
+                    print("Saindo do programa...")
+                    break
                 else:
                     print("Comando inválido.")
+
     else:
         print("Comando inválido.")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

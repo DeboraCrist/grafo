@@ -14,5 +14,4 @@ def is_desconexo(grafo):
             componentes_conexas += 1
             dfs(vertice)
 
-    return componentes_conexas > 1 or (grafo.vertices > 0 and componentes_conexas == 0)
-
+    return componentes_conexas > 1
