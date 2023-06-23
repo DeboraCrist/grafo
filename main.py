@@ -22,6 +22,7 @@ def main():
 
             while True:
                 comando = input("Digite o comando: ")
+
                 if comando == "grafos multigrafos":
                     for i, graph in enumerate(loaded_graphs):
                         tipo = tipo_de_grafo(graph)
@@ -58,15 +59,35 @@ def main():
                             print("ID do grafo inválido.")
                     else:
                         print("Comando inválido.")
+                elif comando.startswith("grafos grau id="):
+                    partes_comando = comando.split()
+                    if len(partes_comando) == 4:
+                        try:
+                            graph_id = int(partes_comando[2][3:])
+                            vertice = partes_comando[3].split("=")[1].strip('\"')
+                            
+                            if 1 <= graph_id <= len(loaded_graphs):
+                                graph = loaded_graphs[graph_id - 1]
+                                try:
+                                    vertice_idx = graph.letras.index(vertice) + 1
+                                    grau = graph.grau_vertice(vertice_idx)
+                                    letra = graph.letras[vertice_idx - 1]
+                                    print(f"Vértice {letra} do grafo de ID={graph_id}: Grau {grau}")
+                                except ValueError:
+                                    print("Vértice não encontrado.")
+                            else:
+                                print("ID do grafo inválido.")
+                        except ValueError:
+                            print("ID do grafo inválido.")
+                    else:
+                        print("Comando inválido.")
                 elif comando == "grafos sair":
-                    print("Saindo do programa...")
                     break
                 else:
                     print("Comando inválido.")
 
-    else:
-        print("Comando inválido.")
-
+        else:
+            print("Falha ao carregar os grafos.")
 
 if __name__ == "__main__":
     main()

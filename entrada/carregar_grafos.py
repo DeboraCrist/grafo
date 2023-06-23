@@ -2,6 +2,7 @@ import json
 
 from grafo.grafo import Grafo
 
+
 def carregar_grafos(arquivo):
     with open(arquivo, "r") as f:
         try:
