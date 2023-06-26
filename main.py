@@ -22,7 +22,6 @@ def main():
 
             while True:
                 comando = input("Digite o comando: ")
-
                 if comando == "grafos multigrafos":
                     for i, graph in enumerate(loaded_graphs):
                         tipo = tipo_de_grafo(graph)
@@ -65,7 +64,6 @@ def main():
                         try:
                             graph_id = int(partes_comando[2][3:])
                             vertice = partes_comando[3].split("=")[1].strip('\"')
-                            
                             if 1 <= graph_id <= len(loaded_graphs):
                                 graph = loaded_graphs[graph_id - 1]
                                 try:
@@ -81,13 +79,44 @@ def main():
                             print("ID do grafo inválido.")
                     else:
                         print("Comando inválido.")
+
+                elif comando.startswith("grafos alcancaveis partida="):
+                    partes_comando = comando.split("=")
+                    if len(partes_comando) == 2:
+                        partida = partes_comando[1].strip('\"')
+                        vertices_alcancaveis_total = []
+
+                        for i, graph in enumerate(loaded_graphs):
+                            if partida in graph.letras:
+                                vertice_idx = graph.letras.index(partida) + 1
+                                visitados = set()
+
+                                def dfs(v):
+                                    visitados.add(v)
+                                    for vizinho in range(1, graph.vertices + 1):
+                                        if graph.grafo[v - 1][vizinho - 1] > 0 and vizinho not in visitados:
+                                            dfs(vizinho)
+                                        if graph.grafo[vizinho - 1][v - 1] > 0 and vizinho not in visitados:
+                                            dfs(vizinho)
+
+                                dfs(vertice_idx)
+
+                                vertices_alcancaveis = [graph.letras[v - 1] for v in visitados]
+                                print(f"Vértices alcançáveis a partir do vértice {partida} no grafo de ID={i + 1}:")
+                                print(vertices_alcancaveis)
+                                vertices_alcancaveis_total.extend(vertices_alcancaveis)
+                        
+                    else:
+                        print("Comando inválido.")
+
                 elif comando == "grafos sair":
+                    print("Encerrando o programa...")
                     break
                 else:
                     print("Comando inválido.")
 
-        else:
-            print("Falha ao carregar os grafos.")
+    else:
+        print("Comando inválido.")
 
 if __name__ == "__main__":
     main()
