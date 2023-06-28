@@ -1,4 +1,5 @@
 from entrada.carregar_grafos import carregar_grafos
+from utils.alcancaveis import encontrar_vertices_alcancaveis
 from utils.completos import grafos_completos
 from utils.desconexo import is_desconexo
 from utils.tipo_de_grafo import tipo_de_grafo
@@ -84,28 +85,9 @@ def main():
                     partes_comando = comando.split("=")
                     if len(partes_comando) == 2:
                         partida = partes_comando[1].strip('\"')
-                        vertices_alcancaveis_total = []
-
-                        for i, graph in enumerate(loaded_graphs):
-                            if partida in graph.letras:
-                                vertice_idx = graph.letras.index(partida) + 1
-                                visitados = set()
-
-                                def dfs(v):
-                                    visitados.add(v)
-                                    for vizinho in range(1, graph.vertices + 1):
-                                        if graph.grafo[v - 1][vizinho - 1] > 0 and vizinho not in visitados:
-                                            dfs(vizinho)
-                                        if graph.grafo[vizinho - 1][v - 1] > 0 and vizinho not in visitados:
-                                            dfs(vizinho)
-
-                                dfs(vertice_idx)
-
-                                vertices_alcancaveis = [graph.letras[v - 1] for v in visitados]
-                                print(f"Vértices alcançáveis a partir do vértice {partida} no grafo de ID={i + 1}:")
-                                print(vertices_alcancaveis)
-                                vertices_alcancaveis_total.extend(vertices_alcancaveis)
-                        
+                        vertices_alcancaveis = encontrar_vertices_alcancaveis(partida, loaded_graphs)
+                        print(f"Vértices alcançáveis a partir do vértice {partida} em todos os grafos:")
+                        print(vertices_alcancaveis)
                     else:
                         print("Comando inválido.")
 
