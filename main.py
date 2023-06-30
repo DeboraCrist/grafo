@@ -5,6 +5,7 @@ from entrada.carregar_grafos import carregar_grafos
 from utils.alcancaveis import encontrar_vertices_alcancaveis
 from utils.completos import grafos_completos
 from utils.desconexo import is_desconexo
+from utils.inalcancaveis import encontrar_vertices_inalcancaveis
 from utils.tipo_de_grafo import tipo_de_grafo
 
 def main():
@@ -91,6 +92,15 @@ def main():
                         vertices_alcancaveis = encontrar_vertices_alcancaveis(partida, loaded_graphs)
                         print(f"Vértices alcançáveis a partir do vértice {partida} em todos os grafos:")
                         print(vertices_alcancaveis)
+                    else:
+                        print("Comando inválido.")
+                elif comando.startswith("grafos inalcancaveis partida="):
+                    partes_comando = comando.split("=")
+                    if len(partes_comando) == 2:
+                        partida = partes_comando[1].strip('\"')
+                        vertices_inalcancaveis = encontrar_vertices_inalcancaveis(partida, loaded_graphs)
+                        print(f"Vértices inalcançáveis a partir do vértice {partida} em todos os grafos:")
+                        print(vertices_inalcancaveis)
                     else:
                         print("Comando inválido.")
 
