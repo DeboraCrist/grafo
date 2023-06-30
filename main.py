@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 from entrada.carregar_grafos import carregar_grafos
 from utils.alcancaveis import encontrar_vertices_alcancaveis
 from utils.completos import grafos_completos
